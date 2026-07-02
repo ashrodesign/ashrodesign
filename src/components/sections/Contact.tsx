@@ -3,33 +3,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { motion } from "framer-motion";
 import { Check, ChevronDown, Loader2, ArrowRight, Mail, Phone } from "lucide-react";
 import { islands, businessStages, serviceOptions, contactInfo } from "@/lib/data";
+import { contactSchema, type ContactFormValues } from "@/lib/schemas";
 import { Icons } from "@/lib/icons";
 import { Button } from "@/components/ui/Button";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { cn } from "@/lib/utils";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const schema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  businessName: z.string().min(1, "Business name is required"),
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .regex(EMAIL_RE, "Enter a valid email address"),
-  phone: z.string().min(7, "Phone number is required"),
-  island: z.string().min(1, "Please select your island"),
-  stage: z.string().min(1, "Please tell us where you are right now"),
-  services: z.array(z.string()),
-  message: z.string(),
-});
-
-type FormValues = z.infer<typeof schema>;
+type FormValues = ContactFormValues;
 
 const fieldCls = (hasError?: boolean) =>
   cn(
@@ -58,6 +41,7 @@ function ErrorText({ id, msg }: { id: string; msg?: string }) {
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -66,7 +50,7 @@ export function Contact() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(contactSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -90,11 +74,18 @@ export function Contact() {
   };
 
   const onSubmit = async (data: FormValues) => {
-    // TODO: wire to email/CRM endpoint
-    await new Promise((r) => setTimeout(r, 900));
-    // eslint-disable-next-line no-console
-    console.log("New strategy-call lead:", data);
-    setSubmitted(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Something went wrong sending your request. Please try again.");
+    }
   };
 
   return (
@@ -391,6 +382,11 @@ export function Contact() {
               </div>
 
               <div className="pt-1">
+                {submitError && (
+                  <p role="alert" className="mb-3 text-center text-sm text-red-400">
+                    {submitError}
+                  </p>
+                )}
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
