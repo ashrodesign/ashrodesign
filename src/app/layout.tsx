@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/ui/SmoothScroll";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body className="min-h-dvh bg-bg text-fg antialiased">
         <div className="grain" aria-hidden />
         <SmoothScroll>{children}</SmoothScroll>
+        <BackToTop />
       </body>
     </html>
   );
