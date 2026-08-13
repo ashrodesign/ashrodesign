@@ -251,6 +251,21 @@ html.lenis body {
   animation: drift 18s ease-in-out infinite;
 }
 
+/* Gentle float for the 3D book mockup — the rotation is baked into every
+   keyframe since an animated `transform` fully replaces a static one. */
+@keyframes book-float {
+  0%,
+  100% {
+    transform: rotateY(-20deg) rotateX(4deg) translateY(0);
+  }
+  50% {
+    transform: rotateY(-20deg) rotateX(4deg) translateY(-10px);
+  }
+}
+.animate-book-float {
+  animation: book-float 6s ease-in-out infinite;
+}
+
 /* Grain / noise overlay */
 .grain {
   position: fixed;

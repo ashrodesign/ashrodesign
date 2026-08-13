@@ -7,6 +7,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { BlueprintOptInForm } from "@/components/sections/BlueprintOptInForm";
+import { BlueprintCoverMockup } from "@/components/sections/BlueprintCoverMockup";
 
 const TITLE = "The Bahamian Store Owner's Digital Growth Blueprint";
 const DESCRIPTION =
@@ -82,7 +83,7 @@ export default function FreeBlueprintPage() {
   return (
     <main className="min-h-dvh">
       {/* ---- Hero ---- */}
-      <section className="relative isolate overflow-hidden px-6 pb-20 pt-16 sm:pt-20">
+      <section className="relative isolate overflow-hidden px-6 pb-20 pt-8 sm:pt-10">
         <div
           aria-hidden
           className="bloom"
@@ -97,34 +98,45 @@ export default function FreeBlueprintPage() {
           }}
         />
 
-        <div className="relative mx-auto max-w-2xl text-center">
-          <Image
-            src={brand.logoWhite}
-            alt="Ashro Design"
-            width={130}
-            height={41}
-            priority
-            className="mx-auto h-9 w-auto"
-          />
+        <div className="relative mx-auto max-w-6xl">
+          {/* top bar — logo + badge, no nav links */}
+          <div className="flex items-center justify-between">
+            <Image
+              src={brand.logoWhite}
+              alt="Ashro Design"
+              width={120}
+              height={38}
+              priority
+              className="h-7 w-auto sm:h-8"
+            />
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs text-muted backdrop-blur sm:text-sm">
+              <Sparkles size={14} className="text-accent-glow" />
+              Free Guide For Bahamian Store Owners
+            </span>
+          </div>
 
-          <span className="mt-10 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-muted backdrop-blur">
-            <Sparkles size={15} className="text-accent-glow" />
-            Free Guide For Bahamian Store Owners
-          </span>
+          {/* mockup + headline/form, side by side on desktop */}
+          <div className="mt-14 grid items-center gap-12 sm:mt-16 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <BlueprintCoverMockup />
+            </Reveal>
 
-          <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-5xl md:text-[3.4rem]">
-            {TITLE.replace("Digital Growth Blueprint", "")}
-            <span className="text-gradient">Digital Growth Blueprint</span>
-          </h1>
+            <Reveal delay={0.08}>
+              <h1 className="text-balance text-4xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-5xl">
+                {TITLE.replace("Digital Growth Blueprint", "")}
+                <span className="text-gradient">Digital Growth Blueprint</span>
+              </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-pretty text-lg text-muted">
-            How to get your store online, reach more customers, and sell more —
-            even if you&apos;re not techy and you&apos;re running the whole thing
-            yourself.
-          </p>
+              <p className="mt-6 max-w-xl text-pretty text-lg text-muted">
+                How to get your store online, reach more customers, and sell
+                more — even if you&apos;re not techy and you&apos;re running
+                the whole thing yourself.
+              </p>
 
-          <div className="mx-auto mt-9 max-w-md">
-            <BlueprintOptInForm />
+              <div className="mt-9 max-w-md">
+                <BlueprintOptInForm />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
