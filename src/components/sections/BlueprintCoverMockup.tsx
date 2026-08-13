@@ -41,9 +41,9 @@ export function BlueprintCoverMockup() {
               src={brand.logoWhite}
               alt=""
               aria-hidden
-              width={90}
-              height={28}
-              className="h-5 w-auto"
+              width={110}
+              height={35}
+              className="h-5 w-auto shrink-0 self-start"
             />
 
             <span className="mt-6 inline-flex w-fit items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-[0.14em] text-muted">
