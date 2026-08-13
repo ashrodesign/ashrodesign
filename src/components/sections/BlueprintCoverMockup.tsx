@@ -21,10 +21,14 @@ export function BlueprintCoverMockup() {
         }}
       />
 
-      <div className="animate-book-float relative [transform-style:preserve-3d]">
-        {/* stacked page edges behind the cover, simulating book thickness */}
-        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-2xl bg-[#0d0e18] [transform:translateZ(-12px)]" />
-        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-2xl bg-[#11121b] [transform:translateZ(-6px)]" />
+      {/* Plain 2D offsets below (no translateZ/preserve-3d): Safari can let
+          genuinely 3D-depth content escape an ancestor's overflow:hidden
+          during pinch-zoom/rubber-band scroll, so this fakes the
+          stacked-pages look on a single flat rotated plane instead — safe,
+          and still lets the ~8px peek-out read as page edges. */}
+      <div className="animate-book-float relative">
+        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-2xl bg-[#0d0e18]" />
+        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-2xl bg-[#11121b]" />
 
         {/* front cover */}
         <div className="hairline glass relative aspect-[3/4] overflow-hidden rounded-2xl bg-[linear-gradient(160deg,#12101f_0%,#0a0b0f_55%,#170f2e_100%)] p-6 shadow-[24px_32px_60px_-20px_rgba(0,0,0,0.75)]">
