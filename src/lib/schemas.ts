@@ -18,3 +18,13 @@ export const contactSchema = z.object({
 });
 
 export type ContactFormValues = z.infer<typeof contactSchema>;
+
+export const blueprintSignupSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .regex(EMAIL_RE, "Enter a valid email address"),
+});
+
+export type BlueprintSignupValues = z.infer<typeof blueprintSignupSchema>;
