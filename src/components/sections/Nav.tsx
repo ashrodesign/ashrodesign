@@ -11,7 +11,13 @@ import { SocialLinks } from "@/components/ui/SocialLinks";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export function Nav() {
+type NavProps = {
+  /** Prefix for in-page anchors — pass "/" from routes other than the
+   *  homepage so the links navigate home and then scroll. */
+  linkPrefix?: string;
+};
+
+export function Nav({ linkPrefix = "" }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -54,7 +60,7 @@ export function Nav() {
           )}
         >
           <a
-            href="#top"
+            href={`${linkPrefix}#top`}
             aria-label="Ashro Design — home"
             className="relative z-10 flex items-center"
           >
@@ -72,7 +78,7 @@ export function Nav() {
             {navLinks.map((l) => (
               <a
                 key={l.href}
-                href={l.href}
+                href={`${linkPrefix}${l.href}`}
                 className="rounded-full px-4 py-2 text-sm text-muted transition-colors hover:bg-white/[0.06] hover:text-fg"
               >
                 {l.label}
@@ -81,7 +87,7 @@ export function Nav() {
           </nav>
 
           <div className="hidden md:block">
-            <Button href="#contact" size="md">
+            <Button href={`${linkPrefix}#contact`} size="md">
               Book a Strategy Call
             </Button>
           </div>
@@ -126,7 +132,7 @@ export function Nav() {
                 {navLinks.map((l, i) => (
                   <li key={l.href}>
                     <a
-                      href={l.href}
+                      href={`${linkPrefix}${l.href}`}
                       className="flex items-center justify-between rounded-2xl px-4 py-4 text-lg text-fg/90 transition-colors hover:bg-white/5"
                     >
                       <span>{l.label}</span>
@@ -136,7 +142,7 @@ export function Nav() {
                 ))}
               </ul>
               <div className="mt-3 px-1 pb-1">
-                <Button href="#contact" className="w-full">
+                <Button href={`${linkPrefix}#contact`} className="w-full">
                   Book a Strategy Call
                 </Button>
               </div>

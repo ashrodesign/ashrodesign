@@ -276,7 +276,15 @@ export default function FreeBlueprintPage() {
       {/* ---- Minimal footer ---- */}
       <footer className="px-6 pb-10 pt-4">
         <p className="text-center text-xs text-muted-2">
-          © {new Date().getFullYear()} Ashro Design · info@ashrodesign.net
+          © {new Date().getFullYear()} Ashro Design · info@ashrodesign.net ·{" "}
+          <a
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-underline transition-colors hover:text-fg"
+          >
+            Privacy Policy
+          </a>
         </p>
       </footer>
     </main>

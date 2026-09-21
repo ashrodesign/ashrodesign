@@ -4,7 +4,13 @@ import { brand } from "@/lib/assets";
 import { NewsletterForm } from "@/components/ui/NewsletterForm";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 
-export function Footer() {
+type FooterProps = {
+  /** Prefix for in-page anchors — pass "/" from routes other than the
+   *  homepage so the links navigate home and then scroll. */
+  linkPrefix?: string;
+};
+
+export function Footer({ linkPrefix = "" }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -39,7 +45,7 @@ export function Footer() {
               {navLinks.map((l) => (
                 <li key={l.href}>
                   <a
-                    href={l.href}
+                    href={`${linkPrefix}${l.href}`}
                     className="link-underline text-sm text-muted transition-colors hover:text-fg"
                   >
                     {l.label}
@@ -56,7 +62,7 @@ export function Footer() {
               {services.map((s) => (
                 <li key={s.title}>
                   <a
-                    href="#services"
+                    href={`${linkPrefix}#services`}
                     className="link-underline text-sm text-muted transition-colors hover:text-fg"
                   >
                     {s.title.replace(" & E-Commerce Development", "")}
@@ -92,7 +98,16 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-muted-2 sm:flex-row">
-          <p>&copy; {year} Ashro Design. All rights reserved.</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+            <p>&copy; {year} Ashro Design. All rights reserved.</p>
+            <span aria-hidden className="hidden h-1 w-1 rounded-full bg-muted-2 sm:block" />
+            <a
+              href="/privacy"
+              className="link-underline transition-colors hover:text-fg"
+            >
+              Privacy Policy
+            </a>
+          </div>
           <p>Imagery via Unsplash. Built for Bahamian businesses.</p>
         </div>
       </div>
