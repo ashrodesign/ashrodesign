@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { trackNewsletterSignup } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,6 +26,7 @@ export function NewsletterForm() {
         body: JSON.stringify({ email }),
       });
       if (!res.ok) throw new Error("Request failed");
+      trackNewsletterSignup();
       setStatus("done");
     } catch {
       setErrorMsg("Something went wrong. Please try again.");

@@ -11,6 +11,7 @@ import { Icons } from "@/lib/icons";
 import { Button } from "@/components/ui/Button";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { cn } from "@/lib/utils";
+import { trackContactLead } from "@/lib/analytics";
 
 type FormValues = ContactFormValues;
 
@@ -82,6 +83,7 @@ export function Contact() {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("Request failed");
+      trackContactLead();
       setSubmitted(true);
     } catch {
       setSubmitError("Something went wrong sending your request. Please try again.");

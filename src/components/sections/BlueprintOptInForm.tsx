@@ -8,6 +8,7 @@ import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { blueprintSignupSchema, type BlueprintSignupValues } from "@/lib/schemas";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { trackBlueprintLead } from "@/lib/analytics";
 
 const fieldCls = (hasError?: boolean) =>
   cn(
@@ -38,6 +39,7 @@ export function BlueprintOptInForm({ className }: { className?: string }) {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("Request failed");
+      trackBlueprintLead();
       setSubmitted(true);
     } catch {
       setSubmitError("Something went wrong. Please try again.");

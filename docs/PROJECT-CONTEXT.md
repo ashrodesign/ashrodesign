@@ -68,6 +68,7 @@ src/
     api/contact/route.ts        POST → Supabase contact_submissions
     api/newsletter/route.ts     POST → Brevo list 3 (footer signup)
     api/blueprint-signup/route.ts POST → Brevo list 4 (lead magnet)
+  components/ui/Analytics.tsx   Loads GA4 (gtag.js) + Meta Pixel via next/script
   components/
     sections/               One component per page section (Nav, Hero, Services, …, Footer)
     ui/                     Shared primitives (Button, GlowCard, Reveal, SectionHeading, …)
@@ -75,6 +76,7 @@ src/
     data.ts                 ALL marketing copy lives here
     assets.ts               ALL media paths live here
     schemas.ts              Shared zod schemas (contact + blueprint signup)
+    analytics.ts            GA4/Meta IDs + conversion event helpers (trackContactLead, …)
     icons.ts                IconKey → lucide icon map
     motion.ts               EASE curve, shared Framer variants, viewportOnce
     hooks.ts                usePrefersReducedMotion, useMediaQuery, useMounted
@@ -204,6 +206,26 @@ Contact form → POST /api/contact → Supabase `contact_submissions`
   (linked, not attached — attachments hurt deliverability). Delivery is Brevo's job; the app
   only adds the contact.
 
+### Analytics → Google Analytics 4 + Meta Pixel
+
+GA4 property: **`G-ZQ6JVD6NRC`**. Meta Pixel ID not yet set.
+
+`<Analytics />` in the root layout loads both tags `afterInteractive`, **only in production
+builds** (`NODE_ENV === "production"`) so local dev never pollutes real data. A missing ID
+just skips that tag.
+
+| Trigger | GA4 event | Meta event |
+|---|---|---|
+| Page load | `page_view` (auto, from `config`) | `PageView` |
+| Contact form success | `generate_lead` `{form_name: "contact"}` | `Lead` |
+| Blueprint opt-in success | `generate_lead` `{form_name: "free_blueprint"}` | `Lead` |
+| Newsletter signup success | `sign_up` `{method: "newsletter"}` | `CompleteRegistration` |
+
+Events fire only after the API returns OK. Mark `generate_lead` and `sign_up` as **key
+events** in GA4 Admin. Client-side route changes: GA4 relies on Enhanced Measurement
+(history events); Meta `PageView` is fired by `Analytics.tsx` on pathname change (today all
+cross-page links are plain `<a>` full reloads, so this is future-proofing).
+
 ---
 
 ## 8. Environment variables
@@ -215,6 +237,8 @@ Contact form → POST /api/contact → Supabase `contact_submissions`
 | `BREVO_API_KEY` | **Yes** | ✅ | ❌ never | ✅ |
 | `BREVO_LIST_ID` (`3`) | No | ✅ | ❌ | ✅ |
 | `BREVO_BLUEPRINT_LIST_ID` (`4`) | No | ✅ | ❌ | ✅ |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | No | optional | optional — defaults to `G-ZQ6JVD6NRC` in `src/lib/analytics.ts` | — |
+| `NEXT_PUBLIC_META_PIXEL_ID` | No | optional | ✅ | — |
 
 `.env.production` is deliberately committed — it holds only `NEXT_PUBLIC_*` values, which get
 inlined into the browser bundle anyway, so committing them is not new exposure. **Never add a
@@ -336,8 +360,9 @@ Brevo newsletter wiring → Supabase contact capture + email notifications.
 - **Privacy policy was published without attorney review.** The source file recommended a
   Bahamian attorney review it before publishing; that note was removed at publish time as
   instructed, but the review may not have happened.
-- **Privacy policy §4 claims Google Analytics and the Meta Pixel are in use.** No analytics or
-  pixel scripts exist in the codebase. Either install them or soften that wording.
+- **No cookie-consent banner.** GA4 and the Meta Pixel load for every visitor. Fine for
+  Bahamian traffic, but add consent (Google Consent Mode + `fbq('consent', …)`) before
+  targeting EU/UK visitors.
 - **Pre-existing lint errors** in `hooks.ts` / `CursorLight.tsx` (see §10) are unaddressed.
 
 ### Working style the user expects
