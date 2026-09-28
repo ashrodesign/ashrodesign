@@ -208,7 +208,7 @@ Contact form → POST /api/contact → Supabase `contact_submissions`
 
 ### Analytics → Google Analytics 4 + Meta Pixel
 
-GA4 property: **`G-ZQ6JVD6NRC`**. Meta Pixel ID not yet set.
+GA4 property: **`G-ZQ6JVD6NRC`**. Meta Pixel (dataset) ID: **`606135985426687`**.
 
 `<Analytics />` in the root layout loads both tags `afterInteractive`, **only in production
 builds** (`NODE_ENV === "production"`) so local dev never pollutes real data. A missing ID
@@ -238,7 +238,7 @@ cross-page links are plain `<a>` full reloads, so this is future-proofing).
 | `BREVO_LIST_ID` (`3`) | No | ✅ | ❌ | ✅ |
 | `BREVO_BLUEPRINT_LIST_ID` (`4`) | No | ✅ | ❌ | ✅ |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | No | optional | optional — defaults to `G-ZQ6JVD6NRC` in `src/lib/analytics.ts` | — |
-| `NEXT_PUBLIC_META_PIXEL_ID` | No | optional | ✅ | — |
+| `NEXT_PUBLIC_META_PIXEL_ID` | No | optional | optional — defaults to `606135985426687` in `src/lib/analytics.ts` | — |
 
 `.env.production` is deliberately committed — it holds only `NEXT_PUBLIC_*` values, which get
 inlined into the browser bundle anyway, so committing them is not new exposure. **Never add a

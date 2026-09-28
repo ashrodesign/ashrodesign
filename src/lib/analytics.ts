@@ -6,7 +6,8 @@
 
 export const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-ZQ6JVD6NRC";
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "";
+export const META_PIXEL_ID =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID || "606135985426687";
 
 // Only fire in production builds so local dev doesn't pollute real data.
 export const ANALYTICS_ENABLED = process.env.NODE_ENV === "production";
