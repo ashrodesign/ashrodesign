@@ -260,6 +260,12 @@ Brevo API keys come in two flavors — the REST key starts `xkeysib-`, the SMTP 
 
 **Auto-deploys on push to `main`.** No manual trigger needed.
 
+**Production builds use webpack, not Turbopack** (`"build": "next build --webpack"`). On
+2026-09-28 Hostinger's build panicked with `TurbopackInternalError … globals.css … node process
+exited before we could connect to it` — Turbopack spawns a Node worker for PostCSS/Tailwind and
+Hostinger's build container killed it. Webpack runs PostCSS in-process and builds fine. `npm run
+dev` still uses Turbopack locally. Don't remove the flag.
+
 Two things that bite every time:
 
 1. **The build type-checks the entire repo**, including non-Next code. `supabase/functions` is
@@ -344,7 +350,7 @@ no global `.gitconfig`.
 
 ## 12. Current state (as of 2026-09-28)
 
-`main` @ `b11dece`, working tree clean, `npm audit` reports 0 vulnerabilities.
+`main` @ `b11dece`, working tree clean, `npm audit` reported 0 vulnerabilities at that point.
 
 Recent work: privacy policy page + footer links → security patches (next 16.2.11, sharp,
 postcss) → free-blueprint landing page with CSS 3D book mockup → back-to-top button →
@@ -363,6 +369,9 @@ Brevo newsletter wiring → Supabase contact capture + email notifications.
 - **No cookie-consent banner.** GA4 and the Meta Pixel load for every visitor. Fine for
   Bahamian traffic, but add consent (Google Consent Mode + `fbq('consent', …)`) before
   targeting EU/UK visitors.
+- **New npm advisories (2026-09-28):** `npm audit` now reports 5 (1 critical in `next` ≤16.3.2,
+  plus sharp, browserslist, js-yaml, baseline-browser-mapping). Fix by bumping `next` past
+  16.3.2 and adjusting the `sharp` override — not `npm audit fix --force`.
 - **Pre-existing lint errors** in `hooks.ts` / `CursorLight.tsx` (see §10) are unaddressed.
 
 ### Working style the user expects
