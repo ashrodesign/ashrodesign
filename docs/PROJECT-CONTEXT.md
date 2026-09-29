@@ -208,7 +208,9 @@ Contact form → POST /api/contact → Supabase `contact_submissions`
 
 ### Analytics → Google Analytics 4 + Meta Pixel
 
-GA4 property: **`G-ZQ6JVD6NRC`**. Meta Pixel (dataset) ID: **`606135985426687`**.
+GA4 property: **`G-ZQ6JVD6NRC`**. Meta Pixel (dataset) ID: **`606135985426687`**. Meta domain
+verification uses the `facebook-domain-verification` meta tag, set via `metadata.verification.other`
+in `src/app/layout.tsx` — don't remove it or the domain becomes unverified.
 
 `<Analytics />` in the root layout loads both tags `afterInteractive`, **only in production
 builds** (`NODE_ENV === "production"`) so local dev never pollutes real data. A missing ID

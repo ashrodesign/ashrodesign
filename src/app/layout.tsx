@@ -48,6 +48,12 @@ export const metadata: Metadata = {
     title: "Ashro Design — Bahamas E-Commerce Marketing Agency",
     description: SITE_DESCRIPTION,
   },
+  verification: {
+    other: {
+      // Meta Business domain verification for ashrodesign.net
+      "facebook-domain-verification": "bay9lrdwuwdw44euhgm7dj3dx90css",
+    },
+  },
 };
 
 export const viewport: Viewport = {
