@@ -335,11 +335,13 @@ preserve-3d` content can bleed outside clipping during pinch-zoom or rubber-band
 showing black edges on iOS. Fake depth with plain 2D offsets instead. `html` also has an
 explicit `background-color` as a second line of defense against overscroll reveal.
 
-**`brace-expansion` shows as a vulnerability in Hostinger's scanner — leave it.** `npm audit`
-reports 0 vulnerabilities; Hostinger uses a stricter range. It's a transitive dev-only
-dependency of `eslint`, never shipped to production. Forcing it to 5.x via `overrides`
-**breaks lint entirely** (`TypeError: expand is not a function` — `minimatch@3.1.5` expects the
-1.x API). This was tried and reverted. Wait for an upstream fix.
+**`brace-expansion` is patched with version-scoped `overrides` — keep them scoped.** It's a
+transitive dev-only dependency of `eslint` (never shipped to production), installed twice:
+1.x under `minimatch@3.1.5` and 5.x under `@typescript-eslint`'s `minimatch@10`. On 2026-09-30
+both were bumped for CVE-2026-102278 (nested-brace stack exhaustion) via
+`"brace-expansion@1": "^1.1.21"` and `"brace-expansion@5": "^5.0.12"`. **Never use a plain
+`"brace-expansion"` override:** forcing everything to 5.x **breaks lint entirely**
+(`TypeError: expand is not a function` — `minimatch@3.1.5` expects the 1.x API).
 
 **Patch bundled-dependency CVEs with `overrides`, not version jumps.** Next pins vulnerable
 `postcss` and `sharp` internally; `npm audit fix --force` wants to bump Next itself. A scoped
